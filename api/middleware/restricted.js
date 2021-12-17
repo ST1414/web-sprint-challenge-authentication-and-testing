@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
     // if invalid: "token invalid"
     // if valid, then next
   // Style Note: Using return as an escape instead of if / else
+  console.log('\n### RESTRICTED ###  ')
   const token = req.headers.authorization;
   if (!token){
     return next({ status: 401, message: 'token required'})

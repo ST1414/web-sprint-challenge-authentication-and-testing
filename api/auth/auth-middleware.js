@@ -31,7 +31,6 @@ const checkUnTaken = (req, res, next) => {
 // un does not exist in db
 // Return: "invalid credentials"
 const checkUnExistsInDb = (req, res, next) => {
-    console.log('\n ### CHECK IF UN EXISTS IN DB !!! ### ')
     const { username } = req.body;
     User.findBy({username})
         .then( ([userFromDb]) => {
