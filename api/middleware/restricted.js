@@ -1,8 +1,9 @@
 module.exports = (req, res, next) => {
   
+  console.log('\n ### RESTRICTED !!! ### ')
   next(); // <<<<<<<<<<<< REMOVE ME
 
-  
+
 
 
   /*

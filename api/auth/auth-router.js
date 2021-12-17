@@ -1,12 +1,12 @@
 const router = require('express').Router();
 
 // Require middleware and helpers (tokenBuilder)
-const { checkUnAndPwdExist, checkUnTaken, checkUnExists, checkPwdIsValid } = require('./auth-middleware')
+const { checkUnAndPwdProvided, checkUnTaken, checkUnExistsInDb, checkPwdIsValid } = require('./auth-middleware')
 const { tokenBuilder } = require('./auth-helpers');
 
 
 
-router.post('/register', (req, res) => {
+router.post('/register', checkUnAndPwdProvided, checkUnTaken, (req, res) => {
   // Take username and pwd, create hash w. bcrypt, store in db
   // If success, return { id, un, and hash }
   // Add middleware for checks and fails
@@ -41,7 +41,7 @@ router.post('/register', (req, res) => {
   */
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', checkUnAndPwdProvided, checkUnExistsInDb, checkPwdIsValid, (req, res) => {
   // Receive un and pwd
   // Check db for un and pull hash from db
   // Compare hashes
