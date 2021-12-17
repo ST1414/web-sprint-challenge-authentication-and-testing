@@ -84,7 +84,5 @@ describe('jokes endpoint', () =>{
     let res = await request(server).get('/api/jokes')
       .set('Authorization', token);
     expect(res.body).toHaveLength(3);
-
   })
-
 })
