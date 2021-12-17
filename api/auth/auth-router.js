@@ -1,18 +1,31 @@
 const router = require('express').Router();
 
-// Require middleware and helpers (tokenBuilder)
+// Require bcryptjs
+const bcryptjs = require('bcryptjs');
+const BCRYPTJS_ROUNDS = 8;
+
+// Require (1) middleware, (2) tokenBuilder, (3) JWT Secret
 const { checkUnAndPwdProvided, checkUnTaken, checkUnExistsInDb, checkPwdIsValid } = require('./auth-middleware')
 const { tokenBuilder } = require('./auth-helpers');
+const JWT_SECRET = require('../secrets/')
+
+// Require Model for DB access
+const User = require('../users/users-model');
 
 
-
-router.post('/register', checkUnAndPwdProvided, checkUnTaken, (req, res) => {
-  // Take username and pwd, create hash w. bcrypt, store in db
-  // If success, return { id, un, and hash }
+router.post('/register', checkUnAndPwdProvided, checkUnTaken, (req, res,next) => {
+  // Take username and pwd, create hash w. bcrypt, add it to a user object, store in db
+  // If success, return { id, un, and hash }; NEED to  deconstruct the response from findBy
   // Add middleware for checks and fails
-  res.json({ message: 'register' });
+  const user = req.body;
+  user.password = bcryptjs.hashSync(user.password, BCRYPTJS_ROUNDS);
+  User.create(user)
+    .then( ([response]) => { 
+      console.log(response);
+      res.json(response)
+    })
+    .catch(next);
   
-
 
   /*
     IMPLEMENT
@@ -41,13 +54,27 @@ router.post('/register', checkUnAndPwdProvided, checkUnTaken, (req, res) => {
   */
 });
 
-router.post('/login', checkUnAndPwdProvided, checkUnExistsInDb, checkPwdIsValid, (req, res) => {
+router.post('/login', checkUnAndPwdProvided, checkUnExistsInDb, (req, res, next) => {
   // Receive un and pwd
-  // Check db for un and pull hash from db
-  // Compare hashes
+  // Check db for un and pull the stored user from the dbhash from db
+  // Compare the provided pwd and hash using bcryptjs
   // If success (match), call tokenBuilder and return { msg + token }
   // Add middleware for checks and fails
-  res.json({ message: 'login' });
+  const { username, password } = req.body;
+  User.findBy({username})
+    .then( ([userFromDb]) => {
+      if ( userFromDb && bcryptjs.compareSync(password, userFromDb.password) ){
+        const token = tokenBuilder(userFromDb);
+        res.json({
+          message: `welcome, ${userFromDb.username}`,
+          token: token
+        })
+      } else {
+        next({ status: 401, message: 'invalid credentials' })
+      }
+    })
+    .catch(next);
+
 
   /*
     IMPLEMENT

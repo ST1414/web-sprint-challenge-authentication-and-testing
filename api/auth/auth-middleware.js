@@ -1,9 +1,15 @@
+const User = require('../users/users-model');
+
 // Register + Login
 // Add un & pwd 'missing; check here
 // "username and password required"
 const checkUnAndPwdProvided = (req, res, next) => {
     console.log('\n ### CHECK IF UN & PWD PROVIDED !!! ### ')
-    next();
+    if (req.body.username === undefined || req.body.password === undefined){
+        next({ status: 422, message: "username and password required"})
+    } else {
+        next();
+    }
 }
 
 // Register Only
@@ -22,17 +28,9 @@ const checkUnExistsInDb = (req, res, next) => {
     next();
 }
 
-// Login only
-// pwd is incorrect
-// Return "invalid credentials".
-const checkPwdIsValid = (req, res, next) => {
-    console.log('\n ### CHECK IF PWD IS VALID !!! ### ')
-    next();
-}
 
 module.exports = {
     checkUnAndPwdProvided,
     checkUnTaken,
     checkUnExistsInDb,
-    checkPwdIsValid,
 }
