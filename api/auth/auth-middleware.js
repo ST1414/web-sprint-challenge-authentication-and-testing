@@ -4,9 +4,8 @@ const User = require('../users/users-model');
 // Add un & pwd 'missing; check here
 // "username and password required"
 const checkUnAndPwdProvided = (req, res, next) => {
-    console.log('\n ### CHECK IF UN & PWD PROVIDED !!! ### ')
     if (req.body.username === undefined || req.body.password === undefined){
-        next({ status: 422, message: "username and password required"})
+        next({ status: 401, message: "username and password required"})
     } else {
         next();
     }
@@ -16,8 +15,16 @@ const checkUnAndPwdProvided = (req, res, next) => {
 // Add un check here to see if it already exists
 // Taken: "username taken".
 const checkUnTaken = (req, res, next) => {
-    console.log('\n ### CHECK IF UN IS TAKEN !!! ### ')
-    next();
+    const { username } = req.body;
+    User.findBy({username})
+        .then( ([userFromDb]) => {
+            if (userFromDb) {
+                next({ status: 422, message: "username taken"})
+            } else {
+                next();
+            }
+        })
+        .catch( next );
 }
 
 // Login Only
@@ -25,7 +32,16 @@ const checkUnTaken = (req, res, next) => {
 // Return: "invalid credentials"
 const checkUnExistsInDb = (req, res, next) => {
     console.log('\n ### CHECK IF UN EXISTS IN DB !!! ### ')
-    next();
+    const { username } = req.body;
+    User.findBy({username})
+        .then( ([userFromDb]) => {
+            if (!userFromDb) {
+                next({ status: 401, message: "invalid credentials"})
+            } else {
+                next();
+            }
+        })
+        .catch( next );
 }
 
 
