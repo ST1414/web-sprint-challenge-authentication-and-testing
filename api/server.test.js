@@ -77,7 +77,6 @@ describe('jokes endpoint', () =>{
     expect(res.status).toBe(401);
   })
   
-  // ########### ERROR ERROR ERROR ###########
   it('[GET] /jokes WITH a token returns jokes array', async () => {
 
     let login = await request(server).post('/api/auth/login').send(user);   
