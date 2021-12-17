@@ -18,9 +18,9 @@ You are not allowed to collaborate during the sprint challenge.
 
 Dad jokes are all the rage these days! In this challenge, you will build a real wise-guy application.
 
-- [ ] Users must be able to call the `[POST] /api/auth/register` endpoint to create a new account, and the `[POST] /api/auth/login` endpoint to get a token.
+- [x] Users must be able to call the `[POST] /api/auth/register` endpoint to create a new account, and the `[POST] /api/auth/login` endpoint to get a token.
 
-- [ ] We also need to make sure nobody without the token can call `[GET] /api/jokes` and gain access to our dad jokes.
+- [x] We also need to make sure nobody without the token can call `[GET] /api/jokes` and gain access to our dad jokes.
 
 - [x] We will hash the user's password using `bcryptjs`, and use JSON Web Tokens and the `jsonwebtoken` library.
 
@@ -28,13 +28,13 @@ Dad jokes are all the rage these days! In this challenge, you will build a real 
 
 Your finished project must include all of the following requirements (further instructions are found inside each file):
 
-- [ ] An authentication workflow with functionality for account creation and login, implemented inside `api/auth/auth-router.js`.
-- [ ] Middleware used to restrict access to resources from non-authenticated requests, implemented inside `api/middleware/restricted.js`.
+- [x] An authentication workflow with functionality for account creation and login, implemented inside `api/auth/auth-router.js`.
+- [x] Middleware used to restrict access to resources from non-authenticated requests, implemented inside `api/middleware/restricted.js`.
 - [ ] A minimum of 2 tests per API endpoint, written inside `api/server.test.js`.
 
 **IMPORTANT Notes:**
 
-- [ ] Do not exceed 2^8 rounds of hashing with `bcryptjs`.
+- [x] Do not exceed 2^8 rounds of hashing with `bcryptjs`.
 - [x] If you use environment variables make sure to provide fallbacks in the code (e.g. `process.env.SECRET || "shh"`).
 - [x] You are welcome to create additional files but **do not move or rename existing files** or folders.
 - [x] Do not alter your `package.json` file except to install extra libraries. Do not update existing packages.

@@ -1,17 +1,36 @@
-// Test jokes end points is restricted wo. token
+const request = require('supertest');
+const server = require('../api/server');
+const User = require('../api/users/users-model');
+const db = require('../data/dbConfig');
 
-// Test jokes end pt is NOT restricted w. token
+beforeAll(async () => {
+  await db.migrate.rollback();
+  await db.migrate.latest();
+})
+afterAll(async () => {
+  await db.destroy();
+})
 
-// ==============
+describe('jokes endpoint', () =>{
+  // Test jokes end points is restricted wo. token
+  // Test jokes end pt is NOT restricted w. token
 
-// Test registration checks for un & pwd
 
-// Test registration check for un existing in db
 
-// ==============
+})
 
-// Test login checks for un & pwd
 
-// Test login for no such un
+describe('registration endpoint', () => {
+  // Test registration checks for un & pwd
+  // Test registration check for un existing in db
 
-// Test pwd for invalid pwd
+})
+
+
+describe('login endpoint', () => {
+  // Test login checks for un & pwd
+  // Test login for no such un
+  // Test pwd for invalid pwd
+
+})
+
